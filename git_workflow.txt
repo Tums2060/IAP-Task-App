@@ -1,0 +1,48 @@
+1. Created a repository via github and cloned it locally
+
+2. created folders, classes -> mail.php
+                    config -> config.php //database configuration
+                    forms -> signup.php forms
+                    public -> webpage displayed on the browser
+
+3. First create a database via mariadb 
+```code 
+--sudo systemctl start mariadb
+--mariadb -u -p
+--CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+4. Edit config.php to allow for database connection
+
+5. Install composer to enable sending mails via phpmailer
+```code
+composer require phpmailer/phpmailer
+
+6. Now edit the mail.php
+```code
+-- import necessary packages
+-- enable custom message
+    try{
+            $this->mail->addAddress($toEmail, $toName);
+            $this->mail->Subject = "Welcome to ICS2.2! Account Verification";
+            $this->mail->Body = '
+                        <p>Hello $toName, </p> <br><br>
+                        <p>You requested an account on ICS2.2.</p> <br><br>
+                        <p>In order to use this account you need to <a>Click here </a> to complete the registration process <br><br>
+                        <p>Regards,</p><br>
+                        <p>Systems Admin</p><br>
+                        <p>ICS2.2</p>
+                        ';
+            $this->mail->send();
+            return true;
+
+        } catch (Exception $e){
+            return "Mailer Error: ".$this->mail->ErrorInfo;
+        }
+
+7. Edit signup.php
