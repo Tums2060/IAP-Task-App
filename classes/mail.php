@@ -24,14 +24,18 @@ class Mailer{
         try{
             $this->mail->addAddress($toEmail, $toName);
             $this->mail->Subject = "Welcome to ICS2.2! Account Verification";
-            $this->mail->Body = '
-                        <p>Hello $toName, </p> <br><br>
+
+            // Email send as html
+            $this->mail->isHTML(true);
+
+            $this->mail->Body = "
+                        <p>Hello {$toName}, </p> <br><br>
                         <p>You requested an account on ICS2.2.</p> <br><br>
                         <p>In order to use this account you need to <a>Click here </a> to complete the registration process <br><br>
                         <p>Regards,</p><br>
                         <p>Systems Admin</p><br>
                         <p>ICS2.2</p>
-                        ';
+                        ";
             $this->mail->send();
             return true;
 
