@@ -33,4 +33,19 @@ if (isset($_POST['submit'])){
 
 
 ?>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+</head>
+<body>
+    <h2>Sign Up</h2>
+    <form method="POST" action="">
+        <input type="text" name="name" placeholder="Full Name" required><br><br>
+        <input type="email" name="email" placeholder="Email" required><br><br>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <button type="submit" name="submit">Sign Up</button>
+    </form>
+</body>
+</html>
