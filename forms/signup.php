@@ -11,7 +11,26 @@ if (isset($_POST['submit'])){
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
         die("Invalid email format");
     }
+
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $email, $password);
+
+    if ($stmt->execute()) {
+        echo "Sign up successful";
+
+        $mailer = new Mailer();
+        $result = $mailer->sendMail($email, $name);
+
+        if ($result === true){
+            echo "Email sent";
+        } else{
+            echo $result;
+        }
+    } else {
+        echo "Error: ".$conn->error;
+    }
 }
 
 
 ?>
+
