@@ -43,6 +43,7 @@ class Mailer{
             return "Mailer Error: ".$this->mail->ErrorInfo;
         }
     }
+    
 }
 
 
