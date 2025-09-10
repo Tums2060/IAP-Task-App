@@ -46,3 +46,15 @@ composer require phpmailer/phpmailer
         }
 
 7. Edit signup.php
+--here i validated the email; 
+```code
+--if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        die("Invalid email format");
+    }
+
+--and allowed insertion into the database
+```code
+--$stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $name, $email, $password);
+
+7. Edit the users.php to enable displaying as orderd number
