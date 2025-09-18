@@ -24,10 +24,9 @@ class Mailer {
             // Generate 6-digit random code
             $code = random_int(100000, 999999);
 
+            $this->mail->clearAddresses();
             $this->mail->addAddress($toEmail, $toName);
             $this->mail->Subject = "Your ICS2.2 2FA Verification Code";
-
-            // Email send as HTML
             $this->mail->isHTML(true);
 
             $this->mail->Body = "
@@ -45,8 +44,31 @@ class Mailer {
             ";
 
             $this->mail->send();
+            return true; // return the code so you can store/verify later
 
-            
+        } catch (Exception $e) {
+            return "Mailer Error: " . $this->mail->ErrorInfo;
+        }
+    }
+
+    public function sendNotification($toEmail){
+        try {
+            $this->mail->clearAddresses();
+            $this->mail->addAddress($toEmail);
+            $this->mail->Subject = "Thank you for subscribing!";
+            $this->mail->isHTML(true);
+
+            $this->mail->Body = "
+                <p>Hello, </p>
+                <p>Thank you for subscribing to Tumaini's newsletter!</p>
+                <p>I will keep you updated with the latest news and updates.</p>
+                <br>
+                <p>Regards,</p>
+                <p>Tumaini Wamukota</p>
+            ";
+
+            $this->mail->send();
+            return true;
 
         } catch (Exception $e) {
             return "Mailer Error: " . $this->mail->ErrorInfo;

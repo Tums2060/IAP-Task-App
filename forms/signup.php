@@ -1,4 +1,8 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include __DIR__ . '/../config/config.php';
 require __DIR__ . '/../classes/mail.php';
 
@@ -19,7 +23,7 @@ if (isset($_POST['submit'])){
         echo "Sign up successful";
 
         $mailer = new Mailer();
-        $result = $mailer->sendMail($email, $name);
+        $result = $mailer->send2FA($email, $name);
 
         if ($result === true){
             echo "Email sent";
