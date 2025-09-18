@@ -4,47 +4,52 @@ use PHPMailer\PHPMailer\Exception;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-class Mailer{
+class Mailer {
     private $mail;
 
-    public function __construct(){
+    public function __construct() {
         $this->mail = new PHPMailer(true);
         $this->mail->isSMTP();
-        $this->mail->Host   =  'smtp.gmail.com';
-        $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'tumainiwamukota@gmail.com';
-        $this->mail->Password = 'fiab afip pwmp ennm';
+        $this->mail->Host       = 'smtp.gmail.com';
+        $this->mail->SMTPAuth   = true;
+        $this->mail->Username   = 'tumainiwamukota@gmail.com';
+        $this->mail->Password   = 'fiab afip pwmp ennm'; // App password
         $this->mail->SMTPSecure = 'tls';
-        $this->mail->Port = 587;
+        $this->mail->Port       = 587;
         $this->mail->setFrom('tumainiwamukota@gmail.com', 'Signup App');
-
     }
 
-    public function sendMail($toEmail, $toName){
-        try{
-            $this->mail->addAddress($toEmail, $toName);
-            $this->mail->Subject = "Welcome to ICS2.2! Account Verification";
+    public function send2FA($toEmail, $toName) {
+        try {
+            // Generate 6-digit random code
+            $code = random_int(100000, 999999);
 
-            // Email send as html
+            $this->mail->addAddress($toEmail, $toName);
+            $this->mail->Subject = "Your ICS2.2 2FA Verification Code";
+
+            // Email send as HTML
             $this->mail->isHTML(true);
 
             $this->mail->Body = "
-                        <p>Hello {$toName}, </p> <br><br>
-                        <p>You requested an account on ICS2.2.</p> <br><br>
-                        <p>In order to use this account you need to <a>Click here </a> to complete the registration process <br><br>
-                        <p>Regards,</p><br>
-                        <p>Systems Admin</p><br>
-                        <p>ICS2.2</p>
-                        ";
-            $this->mail->send();
-            return true;
+                <p>Hello {$toName},</p>
+                <p>We received a request to verify your account on <strong>ICS2.2</strong>.</p>
+                <p>Your <strong>2FA verification code</strong> is:</p>
+                <h2 style='color:blue;'>{$code}</h2>
+                <p>This code will expire in 10 minutes.</p>
+                <br>
+                <p>If you did not request this, please ignore this email.</p>
+                <br>
+                <p>Regards,</p>
+                <p>Systems Admin</p>
+                <p>ICS2.2</p>
+            ";
 
-        } catch (Exception $e){
-            return "Mailer Error: ".$this->mail->ErrorInfo;
+            $this->mail->send();
+
+            
+
+        } catch (Exception $e) {
+            return "Mailer Error: " . $this->mail->ErrorInfo;
         }
     }
 }
-
-
-
-?>
